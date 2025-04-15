@@ -7,6 +7,14 @@ console.log(localstorageTask)
 
 let tasks = ref(localstorageTask ? JSON.parse(localstorageTask) : [])
 
+let tasksFilter = ref('all')
+
+const filteredTasks = computed(() => {
+  if (tasksFilter.value === 'completed') return tasks.value.filter((t) => t.completed)
+  if (tasksFilter.value === 'active') return tasks.value.filter((t) => !t.completed)
+  return sortedTasks.value
+})
+
 const newTask = ref('')
 const remainingTasks = computed(() => {
   tasks.value.filter((task) => !task.completed)
@@ -44,6 +52,9 @@ const saveTaskStorage = () => localStorage.setItem('tasks', JSON.stringify(tasks
   <h1>Todo-list</h1>
   <p>Tâches totales : {{ tasks.length }}</p>
   <p>{{ remainingCount }}</p>
+  <button @click="tasksFilter = 'all'">All</button
+  ><button @click="tasksFilter = 'completed'">Completed</button
+  ><button @click="tasksFilter = 'active'">Active</button>
   <!-- <button @click="saveTaskStorage">Save tasks in local storage</button> -->
   <div class="container">
     <form class="add-task-form" @submit.prevent="saveTask">
@@ -54,11 +65,11 @@ const saveTaskStorage = () => localStorage.setItem('tasks', JSON.stringify(tasks
       <li
         class="list-element"
         @click="taskCompleted(task)"
-        v-for="task in sortedTasks"
+        v-for="task in filteredTasks"
         :key="task.id"
         :class="{ strikeout: task.completed }"
       >
-        {{ task.name }}<button @click="deleteTask(task.id)">Delete</button>
+        {{ task.name }}<button @click="deleteTask(task.id)">Delete</button> <button>Edit</button>
       </li>
     </ul>
     <p v-if="!tasks.length">No tasks to do</p>
@@ -71,7 +82,7 @@ const saveTaskStorage = () => localStorage.setItem('tasks', JSON.stringify(tasks
   opacity: 50%;
 }
 
-button:hover {
+form > button:hover {
   animation: pulse 1s infinite;
 }
 
