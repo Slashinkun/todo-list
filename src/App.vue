@@ -62,7 +62,7 @@ const editTask = (task) => {
 const deleteAllTasks = () => {
   if (
     confirm(
-      'Warning : This action is irreversible and will lead to the deletion of all your tasks\nAre you sure to do this ?',
+      'Warning : This action is irreversible and will lead to the deletion of all your tasks.\nAre you sure to do this ?',
     ) === true
   ) {
     localStorage.setItem('tasks', JSON.stringify([]))
@@ -74,7 +74,7 @@ const saveTaskStorage = () => localStorage.setItem('tasks', JSON.stringify(tasks
 </script>
 
 <template>
-  <h1>Todo-list</h1>
+  <h1>Todo List</h1>
   <p>Tasks : {{ tasks.length }}</p>
   <p>Todos : {{ remainingCount }}</p>
   <div>
@@ -121,6 +121,12 @@ const saveTaskStorage = () => localStorage.setItem('tasks', JSON.stringify(tasks
 </template>
 
 <style scoped>
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .strikeout {
   text-decoration: line-through;
   opacity: 50%;
